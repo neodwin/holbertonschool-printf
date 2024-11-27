@@ -98,12 +98,14 @@ Expected output:
 ## Flowchart
 
 ```mermaid
- flowchart TD
-    A[Start _printf] --> B{Is format NULL?}
-    B -->|Yes| C[Return -1]
+flowchart TD
+    Input[/"Input: Format String & Arguments"/] --> A[Start _printf]
+    A --> B{Is format NULL?}
+    B -->|Yes| C[/"Return: -1"/]
     B -->|No| D[Initialize specifiers and arg_pointer]
     D --> E{Is *pointer_string != '\0'?}
-    E -->|No| F[End va_list and Return total_count]
+    E -->|No| F[End va_list]
+    F --> ReturnSuccess[/"Return: total_count"/]
     E -->|Yes| G{Is *pointer_string == '%'}
     G -->|No| H[_putchar(*pointer_string)]
     H --> I[Increment total_count]
@@ -111,7 +113,8 @@ Expected output:
     J --> E
     G -->|Yes| K[Increment pointer_string]
     K --> L{Is *pointer_string == NULL or space?}
-    L -->|Yes| M[End va_list and Return -1]
+    L -->|Yes| M[End va_list]
+    M --> ReturnError[/"Return: -1"/]
     L -->|No| N{Is *pointer_string == '%'}
     N -->|Yes| O[_putchar('%')]
     O --> P[Increment total_count]
@@ -123,6 +126,9 @@ Expected output:
     R -->|No| T[_putchar('%') and _putchar(*pointer_string)]
     T --> U[Increment total_count by 2]
     U --> J
+    ReturnSuccess --> Output[/"Output: Formatted String"/]
+    ReturnError --> Output
+    Output --> End([End])
 ```
 
 ## Authors
