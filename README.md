@@ -1,83 +1,125 @@
-_printf: Custom Implementation of printf
+# Custom Printf Implementation
 
-Project Overview
+## Project Description
 
-This project involves creating a custom version of the standard C library printf function, _printf. The _printf function emulates the behavior of printf, producing formatted output to the standard output stream (stdout). The goal is to replicate key functionality, including handling conversion specifiers for characters, strings, integers, and more, while adhering to strict coding standards.
+This project is a custom implementation of the C standard library's `printf` function. Our `_printf` function replicates the basic functionality of `printf`, handling various format specifiers to print formatted text to standard output.
 
-Compilation
+Supported format specifiers:
+- `%c`: Print a single character
+- `%s`: Print a string
+- `%d` and `%i`: Print integers
+- `%%`: Print a percent sign
 
-The code is compiled using GCC with the following command:
-gcc -Wall -Werror -Wextra -pedantic -std=gnu89 -Wno-format *.c -o printf
+## Compilation
 
-Requirements
+```bash
+gcc -Wall -Werror -Wextra -pedantic *.c -o printf
+```
 
-	•	Operating System: Ubuntu 20.04 LTS
-	•	Compiler: GCC (GNU Compiler Collection)
-	•	Tools:
-	•	vi, vim, or emacs editors
-	•	make for build automation
-	•	git for version control
-	•	Authorized Functions:
-	•	write, malloc, free
-	•	Variadic macros (va_start, va_end, va_arg, va_copy)
+## Requirements
 
-All code must comply with Betty style guidelines.
+- Ubuntu 20.04 LTS
+- GCC compiler
+- Git for version control
+- Code follows Betty style guidelines
 
-Usage Examples
+## Usage Examples
 
-Below are examples of how to use _printf, showcasing its behavior compared to the standard printf function.
-
-Example Code:
-
-#include <stdio.h>
+```c
 #include "main.h"
 
 int main(void)
 {
-    int len1, len2;
-
-    len1 = _printf("Hello, %s!\n", "World");
-    len2 = printf("Hello, %s!\n", "World");
-
-    _printf("Custom: Length: [%d]\n", len1);
-    printf("Standard: Length: [%d]\n", len2);
-
-    _printf("Character: [%c]\n", 'A');
-    _printf("Integer: [%d]\n", 42);
-    _printf("Hexadecimal: [%x]\n", 255);
-
+    /* Basic string printing */
+    _printf("Hello, World!\n");          // Output: Hello, World!
+    
+    /* Character printing */
+    _printf("Character: %c\n", 'A');     // Output: Character: A
+    
+    /* String printing */
+    _printf("String: %s\n", "Hello");    // Output: String: Hello
+    
+    /* Integer printing */
+    _printf("Integer: %d\n", 12345);     // Output: Integer: 12345
+    _printf("Negative: %i\n", -9876);    // Output: Negative: -9876
+    
+    /* NULL string handling */
+    _printf("NULL string: %s\n", NULL);  // Output: NULL string: (null)
+    
+    /* Percent sign */
+    _printf("Percent sign: %%\n");       // Output: Percent sign: %
+    
     return (0);
 }
-Output:
-Hello, World!
-Hello, World!
-Custom: Length: [13]
-Standard: Length: [13]
-Character: [A]
-Integer: [42]
-Hexadecimal: [ff]
+```
 
-Testing
+## Testing
 
-Basic Tests
+### Basic Tests
+```bash
+# Compile test files
+gcc -Wall -Werror -Wextra -pedantic test_printf.c printf.c functions.c _putchar.c -o test_printf
 
-Run the following to verify functionality:
-gcc -Wall -Werror -Wextra -pedantic -std=gnu89 -Wno-format *.c -o test
-./test
+# Run tests
+./test_printf
+```
 
-Memory Leak Check
+The test program compares the output of our _printf with the standard printf function, ensuring identical behavior and return values.
 
-Use valgrind to check for memory leaks:
-valgrind --leak-check=full ./test
+Example test output:
+```
+Simple test
+Simple test
+Test 1 - Lengths: 11, 11
 
-Expected output from Valgrind:
-All heap blocks were freed -- no leaks are possible
+Character:[H]
+Character:[H]
+Test 2 - Lengths: 13, 13
 
-Conclusion
+String:[Hello]
+String:[Hello]
+Test 3 - Lengths: 14, 14
 
-This project emphasizes modular design, collaboration, and mastery of low-level programming concepts such as variadic functions and memory management. By successfully implementing _printf, developers gain a deeper understanding of how the standard printf function operates under the hood.
+Integers: [123] [-456]
+Integers: [123] [-456]
+Test 5 - Lengths: 22, 22
+```
 
-Authors : 
-Edwin:
-Ewan:
-Frederic:
+### Memory Check
+```bash
+valgrind --leak-check=full ./test_printf
+```
+
+Expected output:
+```
+==12345== All heap blocks were freed -- no leaks are possible
+```
+
+## Flowchart
+
+```mermaid
+flowchart TD
+    A[Input String] --> B{Found '%'?}
+    B -->|No| C[Print Character]
+    B -->|Yes| D[Get Next Character]
+    D --> E{Match Format}
+    E -->|%c| F[Print Character]
+    E -->|%s| G[Print String]
+    E -->|%d/%i| H[Print Integer]
+    E -->|%%| I[Print Percent]
+    F --> J[Return Count]
+    G --> J
+    H --> J
+    I --> J
+    C --> J
+    J --> K[Continue Parsing]
+    K --> B
+```
+
+## Authors
+- Edwin
+- Ewan
+- Frederic
+```
+
+</rewritten_file>
