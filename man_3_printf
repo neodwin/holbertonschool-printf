@@ -1,0 +1,12 @@
+NAME
+printf - print character and data
+SYNOPSIS
+#include <stdio.h>
+printf FORMAT ARGUMENT
+DESCRIPTION
+print character according to a format or according to option
+c character
+s string of characters
+% a % followed by another % character will write a single % to the stream
+returns the total number of characters printed else returns a negative value
+ 
