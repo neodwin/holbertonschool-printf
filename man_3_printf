@@ -1,4 +1,4 @@
-.TH _PRINTF 3 "March 2024" "Version 1.0" "User Commands"
+.TH _PRINTF "Decmber 2024" "Version 1.0" "User Commands"
 
 .SH NAME
 _printf \- format and print data to standard output
