@@ -1,0 +1,212 @@
+#include "main.h"
+
+static int print_number(unsigned int n);
+static int print_hex_number(unsigned long int n, int uppercase);
+
+/**
+ * print_char - Prints a character
+ * @args: va_list containing the character to print
+ *
+ * Return: Number of characters printed (always 1)
+ */
+int print_char(va_list args)
+{
+    char c = va_arg(args, int);
+    return (_putchar(c));
+}
+
+/**
+ * print_string - Prints a string
+ * @args: va_list containing the string to print
+ *
+ * Return: Number of characters printed
+ */
+int print_string(va_list args)
+{
+    char *str = va_arg(args, char *);
+    int count = 0;
+
+    if (!str)
+        str = "(null)";
+
+    while (str[count])
+    {
+        _putchar(str[count]);
+        count++;
+    }
+    return (count);
+}
+
+/**
+ * print_int - Prints an integer
+ * @args: va_list containing the integer to print
+ *
+ * Return: Number of characters printed
+ */
+int print_int(va_list args)
+{
+    int n = va_arg(args, int);
+    int count = 0;
+    unsigned int num;
+
+    if (n < 0)
+    {
+        _putchar('-');
+        count++;
+        num = -n;
+    }
+    else
+        num = n;
+
+    if (num / 10)
+        count += print_number(num / 10);
+
+    _putchar((num % 10) + '0');
+    count++;
+
+    return (count);
+}
+
+/**
+ * print_percent - Prints a percent sign
+ * @args: va_list (unused)
+ *
+ * Return: Number of characters printed (always 1)
+ */
+int print_percent(va_list args)
+{
+    (void)args;
+    return (_putchar('%'));
+}
+
+/**
+ * print_number - Helper function to print numbers recursively
+ * @n: Number to print
+ *
+ * Return: Number of characters printed
+ */
+static int print_number(unsigned int n)
+{
+    int count = 0;
+
+    if (n / 10)
+        count += print_number(n / 10);
+
+    _putchar((n % 10) + '0');
+    count++;
+
+    return (count);
+}
+
+/**
+ * print_unsigned - Prints an unsigned integer
+ * @args: va_list containing the unsigned int to print
+ *
+ * Return: Number of characters printed
+ */
+int print_unsigned(va_list args)
+{
+    unsigned int n = va_arg(args, unsigned int);
+    return (print_number(n));
+}
+
+/**
+ * print_octal - Prints a number in octal base
+ * @args: va_list containing the number to print
+ *
+ * Return: Number of characters printed
+ */
+int print_octal(va_list args)
+{
+    unsigned int n = va_arg(args, unsigned int);
+    int count = 0;
+    unsigned int temp = n;
+    char octal[100];
+    int i = 0;
+
+    if (n == 0)
+        return (_putchar('0'));
+
+    while (temp > 0)
+    {
+        octal[i++] = (temp % 8) + '0';
+        temp /= 8;
+    }
+
+    while (--i >= 0)
+        count += _putchar(octal[i]);
+
+    return (count);
+}
+
+/**
+ * print_hex_lower - Prints a number in lowercase hexadecimal
+ * @args: va_list containing the number to print
+ *
+ * Return: Number of characters printed
+ */
+int print_hex_lower(va_list args)
+{
+    unsigned int n = va_arg(args, unsigned int);
+    return (print_hex_number(n, 0));
+}
+
+/**
+ * print_hex_upper - Prints a number in uppercase hexadecimal
+ * @args: va_list containing the number to print
+ *
+ * Return: Number of characters printed
+ */
+int print_hex_upper(va_list args)
+{
+    unsigned int n = va_arg(args, unsigned int);
+    return (print_hex_number(n, 1));
+}
+
+/**
+ * print_pointer - Prints a pointer address
+ * @args: va_list containing the pointer to print
+ *
+ * Return: Number of characters printed
+ */
+int print_pointer(va_list args)
+{
+    void *ptr = va_arg(args, void *);
+    int count = 0;
+
+    if (ptr == NULL)
+    {
+        count += _putchar('(');
+        count += _putchar('n');
+        count += _putchar('i');
+        count += _putchar('l');
+        count += _putchar(')');
+        return (count);
+    }
+
+    count += _putchar('0');
+    count += _putchar('x');
+    count += print_hex_number((unsigned long int)ptr, 0);
+    return (count);
+}
+
+/**
+ * print_hex_number - Helper function to print hex numbers
+ * @n: Number to print
+ * @uppercase: Flag for uppercase hex letters
+ *
+ * Return: Number of characters printed
+ */
+static int print_hex_number(unsigned long int n, int uppercase)
+{
+    int count = 0;
+    char hex_digits[] = "0123456789abcdef";
+    char hex_digits_upper[] = "0123456789ABCDEF";
+    char *digits = uppercase ? hex_digits_upper : hex_digits;
+
+    if (n / 16)
+        count += print_hex_number(n / 16, uppercase);
+
+    count += _putchar(digits[n % 16]);
+    return (count);
+} 

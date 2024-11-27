@@ -1,11 +1,9 @@
 #ifndef MAIN_H
 #define MAIN_H
-
 /* Includes standards */
 #include <stdarg.h>
 #include <unistd.h>
 #include <stddef.h>
-
 /* Structure pour les spécificateurs de format */
 /**
  * struct specifier - Structure for format specifiers
@@ -14,10 +12,9 @@
  */
 typedef struct specifier
 {
-    char spec;
-    int (*f)(va_list);
+char spec;
+int (*f)(va_list);
 } spec_t;
-
 /* Prototypes */
 int _printf(const char *format, ...);
 int print_char(va_list args);
@@ -30,5 +27,4 @@ int print_hex_lower(va_list args);
 int print_hex_upper(va_list args);
 int print_pointer(va_list args);
 int _putchar(char c);
-
 #endif /* MAIN_H */
