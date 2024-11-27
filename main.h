@@ -1,10 +1,6 @@
 #ifndef MAIN_H
 #define MAIN_H
 
-<<<<<<< HEAD
-int _putchar(char c);
-int _printf(const char *format, ...);
-=======
 /* Includes standards */
 #include <stdarg.h>
 #include <unistd.h>
@@ -34,6 +30,5 @@ int print_hex_lower(va_list args);
 int print_hex_upper(va_list args);
 int print_pointer(va_list args);
 int _putchar(char c);
->>>>>>> origin/dev-edwin
 
 #endif /* MAIN_H */
