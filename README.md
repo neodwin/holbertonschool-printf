@@ -99,21 +99,29 @@ Expected output:
 
 ```mermaid
 flowchart TD
-    A[Input String] --> B{Found '%'?}
-    B -->|No| C[Print Character]
-    B -->|Yes| D[Get Next Character]
-    D --> E{Match Format}
-    E -->|%c| F[Print Character]
-    E -->|%s| G[Print String]
-    E -->|%d/%i| H[Print Integer]
-    E -->|%%| I[Print Percent]
-    F --> J[Return Count]
-    G --> J
-    H --> J
-    I --> J
-    C --> J
-    J --> K[Continue Parsing]
-    K --> B
+    Start([Start]) --> Process[Parse Input String]
+    Process --> Decision{Found '%'?}
+    
+    Decision -->|No| Print[Print Regular Character]
+    Decision -->|Yes| GetNext[Get Next Character]
+    
+    GetNext --> FormatCheck{Check Format Type}
+    
+    FormatCheck -->|%c| CharProcess[Process Character]
+    FormatCheck -->|%s| StringProcess[Process String]
+    FormatCheck -->|%d/%i| IntProcess[Process Integer]
+    FormatCheck -->|%%| PercentProcess[Process Percent]
+    
+    CharProcess --> Count[Update Character Count]
+    StringProcess --> Count
+    IntProcess --> Count
+    PercentProcess --> Count
+    Print --> Count
+    
+    Count --> NextChar[Move to Next Character]
+    NextChar --> EndCheck{End of String?}
+    EndCheck -->|No| Process
+    EndCheck -->|Yes| End([End])
 ```
 
 ## Authors
@@ -121,5 +129,3 @@ flowchart TD
 - Ewan
 - Frederic
 ```
-
-</rewritten_file>
