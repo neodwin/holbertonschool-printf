@@ -1,6 +1,7 @@
 #include "main.h"
 #include <stdarg.h>
-#include <stdio.h>
+#include "specifier_t.h"
+
 /**
  * format_specifier - run format specifier and print the argument
  * @pointer_string: pointer to string
@@ -9,53 +10,35 @@
  * specifiers and their corresponding print functions
  * Return: total_count - number of character printed
  */
-
-/* Définition des fonctions de print */
-int print_int(va_list arg)
-{
-        int i = va_arg(arg, int);
-        return (printf("%d", i));
-}
-
-int print_char(va_list arg)
-{
-        char c = va_arg(arg, int);
-        return (printf("%c", c));
-}
-
-int print_string(va_list arg)
-{
-        char *s = va_arg(arg, char *);
-        return (printf("%s", s));
-}
-
-/* Définition de la fonction format_specifier */
 int format_specifier(const char **pointer_string, va_list arg_pointer,
                 specifier_t *specifiers)
 {
         int index = 0;
-        int found = 0;
-        int total_count = 0;
 
-        while (specifiers[index].specifier != '\0')
+        /* Check if parameters are valid */
+        if (!pointer_string || !*pointer_string || !specifiers)
+                return (-1);
+
+        /* Loop through specifiers array to find matching specifier */
+        while (specifiers[index].specifier)
         {
                 if (**pointer_string == specifiers[index].specifier)
-                {
-                        total_count += specifiers[index].print_function(arg_pointer);
-                        found = 1;
-                        break;
-                }
+                        return (specifiers[index].print_function(arg_pointer));
                 index++;
         }
-        if (!found)
-        {
-                _putchar('%');
-                _putchar(**pointer_string);
-                total_count += 2;
-        }
-        return (total_count);
+
+        /* Handle unrecognized specifier */
+        _putchar('%');
+        _putchar(**pointer_string);
+        return (2);
 }
-/* Définition de la fonction _printf */
+
+/**
+ * _printf - function that produces output according to a format
+ * @format: list of types of arguments passed to the function
+ * Return: total_count - number of character printed
+ *         -1 if format is NULL or invalid format specifier
+ */
 int _printf(const char *format, ...)
 {
         specifier_t specifiers[] = {
@@ -75,17 +58,17 @@ int _printf(const char *format, ...)
                 if (*pointer_string == '%')
                 {
                         pointer_string++;
-                        if (*pointer_string == '\0')
-                        {
+                        /* Check for invalid format specifier */
+                        if (*pointer_string == '\0' || *pointer_string == ' ')
                                 return (-1);
-                        }
                         else if (*pointer_string == '%')
                         {
                                 _putchar('%');
                                 total_count++;
                         }
                         else
-                                total_count += format_specifier(&pointer_string, arg_pointer, specifiers);
+                                total_count += format_specifier(&pointer_string,
+                                                arg_pointer, specifiers);
                 }
                 else
                 {
@@ -95,5 +78,13 @@ int _printf(const char *format, ...)
                 pointer_string++;
         }
         va_end(arg_pointer);
+
+        /* Check for error in total count */
+        if (total_count < 0)
+        {
+                va_end(arg_pointer);
+                return (-1);
+        }
+
         return (total_count);
 }
