@@ -99,12 +99,13 @@ Expected output:
 
 ```mermaid
 flowchart TD
-    Start([Start]) --> Init[Initialize va_list & total_count]
+    Input[/"Input: Format String & Arguments"/] --> Start([Start])
+    Start --> Init[Initialize va_list & total_count]
     Init --> ParseString[Parse Format String]
     ParseString --> CheckChar{Is Character '%'?}
     
     CheckChar -->|No| PrintChar[Print Current Character]
-    PrintChar --> UpdateCount1[/Update total_count/]
+    PrintChar --> UpdateCount1[Update total_count]
     
     CheckChar -->|Yes| NextChar[Get Next Character]
     NextChar --> CheckNull{Is Null or Space?}
@@ -112,16 +113,16 @@ flowchart TD
     
     CheckNull -->|No| CheckPercent{Is it '%'?}
     CheckPercent -->|Yes| PrintPercent[Print '%']
-    PrintPercent --> UpdateCount2[/Update total_count/]
+    PrintPercent --> UpdateCount2[Update total_count]
     
     CheckPercent -->|No| FormatSpec[Call format_specifier]
     FormatSpec --> FindSpec{Match Specifier?}
     
     FindSpec -->|Yes| CallFunc[Call Corresponding Function]
-    CallFunc --> UpdateCount3[/Update total_count/]
+    CallFunc --> UpdateCount3[Update total_count]
     
     FindSpec -->|No| PrintBoth[Print '%' and Character]
-    PrintBoth --> UpdateCount4[/Update total_count/]
+    PrintBoth --> UpdateCount4[Update total_count]
     
     UpdateCount1 --> Continue{End of String?}
     UpdateCount2 --> Continue
@@ -130,7 +131,8 @@ flowchart TD
     
     Continue -->|No| ParseString
     Continue -->|Yes| CleanUp[Clean up va_list]
-    CleanUp --> ReturnCount[/Return total_count/]
+    CleanUp --> FinalOutput[/"Output: Formatted String"/]
+    FinalOutput --> ReturnCount[/"Return: Total Count"/]
     ReturnCount --> End([End])
 ```
 
