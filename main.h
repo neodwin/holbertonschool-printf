@@ -14,8 +14,8 @@
  */
 typedef struct specifier
 {
-    char spec;
-    int (*f)(va_list);
+	char spec;
+	int (*f)(va_list);
 } spec_t;
 
 /* Prototypes */
