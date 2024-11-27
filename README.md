@@ -112,16 +112,23 @@ flowchart TD
     FormatCheck -->|%d/%i| IntProcess[Process Integer]
     FormatCheck -->|%%| PercentProcess[Process Percent]
     
-    CharProcess --> Count[Update Character Count]
-    StringProcess --> Count
-    IntProcess --> Count
-    PercentProcess --> Count
-    Print --> Count
+    CharProcess --> Output1[/Output Character/]
+    StringProcess --> Output2[/Output String/]
+    IntProcess --> Output3[/Output Number/]
+    PercentProcess --> Output4[/Output %/]
+    Print --> Output5[/Output Character/]
+    
+    Output1 --> Count[Update Character Count]
+    Output2 --> Count
+    Output3 --> Count
+    Output4 --> Count
+    Output5 --> Count
     
     Count --> NextChar[Move to Next Character]
     NextChar --> EndCheck{End of String?}
     EndCheck -->|No| Process
-    EndCheck -->|Yes| End([End])
+    EndCheck -->|Yes| ReturnCount[/Return Total Count/]
+    ReturnCount --> End([End])
 ```
 
 ## Authors
