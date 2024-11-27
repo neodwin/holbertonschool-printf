@@ -99,35 +99,38 @@ Expected output:
 
 ```mermaid
 flowchart TD
-    Start([Start]) --> Process[Parse Input String]
-    Process --> Decision{Found '%'?}
+    Start([Start]) --> Init[Initialize va_list & total_count]
+    Init --> ParseString[Parse Format String]
+    ParseString --> CheckChar{Is Character '%'?}
     
-    Decision -->|No| Print[Print Regular Character]
-    Decision -->|Yes| GetNext[Get Next Character]
+    CheckChar -->|No| PrintChar[Print Current Character]
+    PrintChar --> UpdateCount1[/Update total_count/]
     
-    GetNext --> FormatCheck{Check Format Type}
+    CheckChar -->|Yes| NextChar[Get Next Character]
+    NextChar --> CheckNull{Is Null or Space?}
+    CheckNull -->|Yes| ReturnError[/Return -1/]
     
-    FormatCheck -->|%c| CharProcess[Process Character]
-    FormatCheck -->|%s| StringProcess[Process String]
-    FormatCheck -->|%d/%i| IntProcess[Process Integer]
-    FormatCheck -->|%%| PercentProcess[Process Percent]
+    CheckNull -->|No| CheckPercent{Is it '%'?}
+    CheckPercent -->|Yes| PrintPercent[Print '%']
+    PrintPercent --> UpdateCount2[/Update total_count/]
     
-    CharProcess --> Output1[/Output Character/]
-    StringProcess --> Output2[/Output String/]
-    IntProcess --> Output3[/Output Number/]
-    PercentProcess --> Output4[/Output %/]
-    Print --> Output5[/Output Character/]
+    CheckPercent -->|No| FormatSpec[Call format_specifier]
+    FormatSpec --> FindSpec{Match Specifier?}
     
-    Output1 --> Count[Update Character Count]
-    Output2 --> Count
-    Output3 --> Count
-    Output4 --> Count
-    Output5 --> Count
+    FindSpec -->|Yes| CallFunc[Call Corresponding Function]
+    CallFunc --> UpdateCount3[/Update total_count/]
     
-    Count --> NextChar[Move to Next Character]
-    NextChar --> EndCheck{End of String?}
-    EndCheck -->|No| Process
-    EndCheck -->|Yes| ReturnCount[/Return Total Count/]
+    FindSpec -->|No| PrintBoth[Print '%' and Character]
+    PrintBoth --> UpdateCount4[/Update total_count/]
+    
+    UpdateCount1 --> Continue{End of String?}
+    UpdateCount2 --> Continue
+    UpdateCount3 --> Continue
+    UpdateCount4 --> Continue
+    
+    Continue -->|No| ParseString
+    Continue -->|Yes| CleanUp[Clean up va_list]
+    CleanUp --> ReturnCount[/Return total_count/]
     ReturnCount --> End([End])
 ```
 
