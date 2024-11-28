@@ -137,7 +137,7 @@ flowchart TD
 ```
 
 ## Authors
-- Edwin
-- Ewan
-- Frederic
+- Edwin : https://github.com/neodwin
+- Ewan : https://github.com/DARcodertech
+- Frederic : https://github.com/FredBourouliou
 ```
